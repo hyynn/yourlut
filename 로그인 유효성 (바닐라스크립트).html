@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .section_box_sub {
+            max-width: 400px;
+            margin: 50px auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .centerbox {
+            padding: 40px 30px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+        
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        fieldset {
+            border: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .input_group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .input_group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .input_group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .input_group input:focus {
+            outline: 2px solid #007bff;
+            outline-offset: 2px;
+            border-color: #007bff;
+        }
+        
+        .input_group input[aria-invalid="true"] {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25);
+        }
+        
+        .input_group input[aria-invalid="false"] {
+            border-color: #28a745;
+        }
+        
+        .password_toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #666;
+            font-size: 16px;
+            padding: 5px;
+        }
+        
+        .password_toggle:focus {
+            outline: 2px solid #007bff;
+            outline-offset: 2px;
+            border-radius: 3px;
+        }
+        
+        .password_toggle:hover {
+            color: #333;
+        }
+        
+        .checkbox_group {
+            margin: 20px 0;
+        }
+        
+        .checkbox_wrapper {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .checkbox_wrapper input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            cursor: pointer;
+        }
+        
+        .checkbox_wrapper input[type="checkbox"]:focus {
+            outline: 2px solid #007bff;
+            outline-offset: 2px;
+        }
+        
+        .checkbox_wrapper label {
+            cursor: pointer;
+            user-select: none;
+            font-size: 14px;
+        }
+        
+        .links_group {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .links_group a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 14px;
+            margin: 0 8px;
+        }
+        
+        .links_group a:hover,
+        .links_group a:focus {
+            text-decoration: underline;
+            outline: 2px solid #007bff;
+            outline-offset: 2px;
+        }
+        
+        .btn_login {
+            width: 100%;
+            padding: 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .btn_login:hover {
+            background-color: #0056b3;
+        }
+        
+        .btn_login:focus {
+            outline: 2px solid #fff;
+            outline-offset: 2px;
+            box-shadow: 0 0 0 4px #007bff;
+        }
+        
+        .btn_login:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .error_message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        /* 스크린 리더기를 위한 추가 스타일 */
+        .sr-only {
+            position: absolute !important;
+            width: 1px !important;
+            height: 1px !important;
+            padding: 0 !important;
+            margin: -1px !important;
+            overflow: hidden !important;
+            clip: rect(0, 0, 0, 0) !important;
+            white-space: nowrap !important;
+            border: 0 !important;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="section_box_sub login">
+            <div class="centerbox">
+                <!-- 메인 제목 -->
+                <h1>로그인</h1>
+    
+                <div class="content">
+                    <!-- 로그인 폼 시작 -->
+                    <form method="post" action="/login" novalidate>
+                        <fieldset>
+                            <!-- 스크린 리더용 범례 -->
+                            <legend class="visually-hidden">사용자 로그인 정보 입력</legend>
+
+                            <!-- 아이디 입력 필드 -->
+                            <div class="input_group">
+                                <label for="user_id">아이디</label>
+                                <input 
+                                    type="text" 
+                                    id="user_id" 
+                                    name="id" 
+                                    placeholder="아이디를 입력하세요 (4글자 이상)"
+                                    required
+                                    minlength="4"
+                                    aria-required="true"
+                                    aria-describedby="id_error id_help"
+                                    autocomplete="username"
+                                    tabindex="1">
+                                <div id="id_help" class="sr-only">아이디는 4글자 이상 입력해주세요</div>
+                                <div id="id_error" class="error_message" role="alert" aria-live="polite"></div>
+                            </div>
+
+                            <!-- 비밀번호 입력 필드 -->
+                            <div class="input_group">
+                                <label for="user_password">비밀번호</label>
+                                <input 
+                                    type="password" 
+                                    id="user_password" 
+                                    name="pw" 
+                                    placeholder="비밀번호를 입력하세요 (영문+숫자+특수문자)"
+                                    required
+                                    minlength="8"
+                                    aria-required="true"
+                                    aria-describedby="password_error password_toggle_desc password_help"
+                                    autocomplete="current-password"
+                                    tabindex="2">
+                                
+                                <!-- 비밀번호 표시/숨김 버튼 -->
+                                <button 
+                                    type="button" 
+                                    class="password_toggle" 
+                                    aria-label="비밀번호 보이기/숨기기"
+                                    aria-describedby="password_toggle_desc"
+                                    tabindex="3">
+                                    <i class="fa-solid fa-eye" aria-hidden="true"></i>
+                                </button>
+                                
+                                <!-- 스크린 리더용 설명 -->
+                                <div id="password_toggle_desc" class="sr-only">
+                                    비밀번호를 화면에 표시하거나 숨길 수 있는 버튼입니다
+                                </div>
+                                <div id="password_help" class="sr-only">
+                                    비밀번호는 영문, 숫자, 특수문자를 모두 포함하여 8글자 이상 입력해주세요
+                                </div>
+                                <div id="password_error" class="error_message" role="alert" aria-live="polite"></div>
+                            </div>
+
+                            <!-- 체크박스 및 링크 그룹 -->
+                            <div class="checkbox_group">
+                                <!-- 아이디 저장 체크박스 -->
+                                <div class="checkbox_wrapper">
+                                    <input 
+                                        type="checkbox" 
+                                        id="save_id" 
+                                        name="save_id"
+                                        tabindex="4">
+                                    <label for="save_id">아이디 저장</label>
+                                </div>
+
+                                <!-- 관련 링크들 -->
+                                <div class="links_group">
+                                    <a href="/find-id" tabindex="5">아이디 찾기</a>
+                                    <span aria-hidden="true">|</span>
+                                    <a href="/find-password" tabindex="6">비밀번호 찾기</a>
+                                    <span aria-hidden="true">|</span>
+                                    <a href="/signup" tabindex="7">회원가입</a>
+                                </div>
+                            </div>
+
+                            <!-- 로그인 버튼 -->
+                            <button 
+                                type="submit" 
+                                class="btn_login"
+                                tabindex="8">
+                                로그인 하기
+                            </button>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 비밀번호 표시/숨김 기능
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordInput = document.getElementById('user_password');
+            const toggleButton = document.querySelector('.password_toggle');
+            const toggleIcon = toggleButton.querySelector('i');
+            
+            toggleButton.addEventListener('click', function() {
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    toggleIcon.className = 'fa-solid fa-eye-slash';
+                    toggleButton.setAttribute('aria-label', '비밀번호 숨기기');
+                } else {
+                    passwordInput.type = 'password';
+                    toggleIcon.className = 'fa-solid fa-eye';
+                    toggleButton.setAttribute('aria-label', '비밀번호 보이기');
+                }
+            });
+
+            // 유효성 검사 함수들
+            function validateUserId(userId) {
+                if (!userId.trim()) {
+                    return '아이디를 입력해주세요.';
+                }
+                if (userId.length < 4) {
+                    return '아이디는 4글자 이상 입력해주세요.';
+                }
+                return '';
+            }
+
+            function validatePassword(password) {
+                if (!password.trim()) {
+                    return '비밀번호를 입력해주세요.';
+                }
+                
+                // 영문, 숫자, 특수문자 포함 검사
+                const hasLetter = /[a-zA-Z]/.test(password);
+                const hasNumber = /[0-9]/.test(password);
+                const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+                
+                if (!hasLetter || !hasNumber || !hasSpecial) {
+                    return '비밀번호는 영문, 숫자, 특수문자를 모두 포함해야 합니다.';
+                }
+                
+                if (password.length < 8) {
+                    return '비밀번호는 8글자 이상 입력해주세요.';
+                }
+                
+                return '';
+            }
+
+            // 실시간 유효성 검사
+            const idInput = document.getElementById('user_id');
+            const pwInput = document.getElementById('user_password');
+            const idError = document.getElementById('id_error');
+            const pwError = document.getElementById('password_error');
+
+            idInput.addEventListener('blur', function() {
+                const errorMessage = validateUserId(this.value);
+                if (errorMessage) {
+                    idError.textContent = errorMessage;
+                    idError.style.display = 'block';
+                    this.setAttribute('aria-invalid', 'true');
+                } else {
+                    idError.style.display = 'none';
+                    this.setAttribute('aria-invalid', 'false');
+                }
+            });
+
+            pwInput.addEventListener('blur', function() {
+                const errorMessage = validatePassword(this.value);
+                if (errorMessage) {
+                    pwError.textContent = errorMessage;
+                    pwError.style.display = 'block';
+                    this.setAttribute('aria-invalid', 'true');
+                } else {
+                    pwError.style.display = 'none';
+                    this.setAttribute('aria-invalid', 'false');
+                }
+            });
+
+            // 폼 제출 시 유효성 검사
+            const form = document.querySelector('form');
+            form.addEventListener('submit', function(e) {
+                let isValid = true;
+                
+                // 아이디 검사
+                const idErrorMessage = validateUserId(idInput.value);
+                if (idErrorMessage) {
+                    idError.textContent = idErrorMessage;
+                    idError.style.display = 'block';
+                    idInput.setAttribute('aria-invalid', 'true');
+                    isValid = false;
+                } else {
+                    idError.style.display = 'none';
+                    idInput.setAttribute('aria-invalid', 'false');
+                }
+
+                // 비밀번호 검사
+                const pwErrorMessage = validatePassword(pwInput.value);
+                if (pwErrorMessage) {
+                    pwError.textContent = pwErrorMessage;
+                    pwError.style.display = 'block';
+                    pwInput.setAttribute('aria-invalid', 'true');
+                    isValid = false;
+                } else {
+                    pwError.style.display = 'none';
+                    pwInput.setAttribute('aria-invalid', 'false');
+                }
+
+                if (!isValid) {
+                    e.preventDefault();
+                    // 첫 번째 오류 필드로 포커스 이동
+                    const firstError = document.querySelector('.error_message[style*="block"]');
+                    if (firstError) {
+                        const errorInput = firstError.previousElementSibling;
+                        if (errorInput && errorInput.tagName === 'INPUT') {
+                            errorInput.focus();
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
