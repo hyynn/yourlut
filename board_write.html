@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YourLUT</title>
+
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/font.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- AOS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- AOS End -->
+
+    <script src="https://kit.fontawesome.com/f3c9d07c5d.js"></script>
+</head>
+
+<body>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="script/action.js"></script>
+
+    <div class="wrap">
+
+        <!-- sub 공통 -->
+        <header>
+            <!-- 헤더자리 -->
+        </header>
+
+        <div id="hero_sub">
+            <h2>BRAND STORY</h2>
+        </div>
+
+        <!-- BRAND STORY -->
+        <div class="section_box_sub board_view">
+            <div class="centerbox">
+                <div class="menu">
+                    <h2>공지사항</h2>
+                </div>
+
+                <div class="content">
+                    <!-- 쓰기 -->
+                     <div class="write_box">
+                        <ul>
+                            <li>
+                                <label for="">구분</label>
+                                <div class="textbox">
+                                    <label for="gubun1">
+                                        <input type="radio" name="gubun" value="" id="gubun1">공지사항
+                                    </label>
+                                    <label for="gubun2">
+                                        <input type="radio" name="gubun" value="" id="gubun2">업데이트
+                                    </label>
+                                </div>
+                            </li>
+                            <li>
+                                <label for="">제목</label>
+                                <div class="textbox">
+                                    <input type="text" required>
+                                </div>
+                            </li>
+                            <li>
+                                <label for="">작성자</label>
+                                <div class="textbox">
+                                    <input type="text" required class="small_input">
+                                </div>
+                            </li>
+                            <li>
+                                <label for="">내용</label>
+                                <div class="textbox">
+                                    <textarea name="" id=""></textarea>
+                                </div>
+                            </li>
+                            <li>
+                                <label for="">파일첨부</label>
+                                <div class="textbox">
+                                    <input type="file" required>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <div class="btn_box">
+                            <a href="board_list.html" class="btn">목록</a>
+                            <button type="reset" class="btn">취소</button>
+                            <button type="reset" class="btn">작성완료</button>
+                        </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <!-- footer -->
+        </footer>
+    </div>
+    
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="js/script.js"></script>
+
+    <!-- AOS -->
+     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+     <script>
+        AOS.init();
+    </script>
+    <!-- AOS End -->
+</body>
+</html>
+

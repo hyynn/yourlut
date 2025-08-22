@@ -209,4 +209,23 @@ $(document).ready(function () {
     // $('.login .id_box input').keydown(function(e){
     //     console.log(e.key);
     // })
+
+    $('.selectbox .title').click(function(){
+        $('.selectbox ul').stop().slideToggle();
+    });
+
+    $('.selectbox ul li').click(function(){
+        let sT = $(this).text();
+        $('.selectbox .title p').text(sT);
+        $('.selectbox ul').slideUp();
+    });
+
+    $('.search_input').keyup(function(){
+        let searchVal = $(this).val();
+        if(searchVal != ''){
+            $('.search_wrap i').css({color:'#000'});
+        } else {
+            $('.search_wrap i').css({color:''});
+        };
+})
 });
