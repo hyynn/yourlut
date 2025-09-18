@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YourLUT</title>
+
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/font.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+</head>
+
+<body class="main">
+    <div class="wrap">
+        <header>
+            <!-- 헤더 자리 -->
+        </header>
+
+        <div id="hero">
+            <video autoplay muted loop>
+                <source src="images/main_visual.mp4">
+            </video>
+
+            <!-- <div class="textbox">
+                <strong>당신의 색감, 유어럿.</strong>
+                <p>제주에서 만나는 가장 감각적인 기록</p>
+            </div> -->
+        </div>
+
+        <div class="section_box">
+            <section id="section1">
+                <div class="centerbox">
+                    <h2>Your Color</h2>
+
+                    <div class="imgbox">
+                        <div class="big_img">
+                            <figure><img src="" alt=""></figure>
+                        </div>
+
+                        <ul class="small_img">
+                            <li class="on">
+                                <figure><img src="images/section1_1.jpg" alt=""></figure>
+                            </li>
+
+                            <li>
+                                <figure><img src="images/section1_2.jpg" alt=""></figure>
+                            </li>
+
+                            <li>
+                                <figure><img src="images/section1_3.jpg" alt=""></figure>
+                            </li>
+
+                            <li>
+                                <figure><img src="images/section1_4.jpg" alt=""></figure>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section2">
+                <div class="centerbox">
+                    <div class="textbox">
+                        <img class="square" src="images/square.png" alt="">
+                        <strong>Your, LUT.</strong>
+                        <div class="text">
+                            <em>당신의 색감, 영화같은 이야기</em>
+                            <p>제주에서 만나는 가장 감각적인 기록</p>
+                        </div>
+                        <a href="#">view more Our story<span><img src="images/btn_more.png" alt=""></span></a>
+                    </div>
+
+                    <ul class="imgbox">
+                        <li><img src="images/section2_1.jpg" alt=""></li>
+                        <li><img src="images/section2_2.jpg" alt=""></li>
+                        <li><img src="images/section2_3.jpg" alt=""></li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="section3">
+                <div class="centerbox">
+                    <h2>Your Stories</h2>
+
+                    <div class="swiper mySwiper">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide"><img src="images/section3/001.jpg" alt=""></div>
+                            <div class="swiper-slide"><img src="images/section3/002.jpg" alt=""></div>
+                            <div class="swiper-slide"><img src="images/section3/003.jpg" alt=""></div>
+                            <div class="swiper-slide"><img src="images/section3/004.jpg" alt=""></div>
+                            <div class="swiper-slide"><img src="images/section3/005.jpg" alt=""></div>
+                            <div class="swiper-slide"><img src="images/section3/006.jpg" alt=""></div>
+                            <div class="swiper-slide"><img src="images/section3/007.jpg" alt=""></div>
+                            <div class="swiper-slide"><img src="images/section3/008.jpg" alt=""></div>
+                            <div class="swiper-slide"><img src="images/section3/009.jpg" alt=""></div>
+                            <div class="swiper-slide"><img src="images/section3/010.jpg" alt=""></div>
+                            <div class="swiper-slide"><img src="images/section3/011.jpg" alt=""></div>
+                            <div class="swiper-slide"><img src="images/section3/012.jpg" alt=""></div>
+                            <div class="swiper-slide"><img src="images/section3/013.jpg" alt=""></div>
+                            <div class="swiper-slide"><img src="images/section3/014.jpg" alt=""></div>
+                            <div class="swiper-slide"><img src="images/section3/015.jpg" alt=""></div>
+                            <div class="swiper-slide"><img src="images/section3/016.jpg" alt=""></div>
+                            <div class="swiper-slide"><img src="images/section3/017.jpg" alt=""></div>
+                            <div class="swiper-slide"><img src="images/section3/018.jpg" alt=""></div>
+                            <div class="swiper-slide"><img src="images/section3/019.jpg" alt=""></div>
+                            <div class="swiper-slide"><img src="images/section3/020.jpg" alt=""></div>
+                        </div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <!-- footer 자리 -->
+        </footer>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="script/action2.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!-- Initialize -->
+    <script>
+        var swiper = new Swiper(".mySwiper", {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            loop: true,
+            effect: 'fade',
+            fadeEffect: {
+                crossFade: true
+            },
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+        });
+    </script>
+</body>
+
+</html>
