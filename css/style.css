@@ -3,8 +3,14 @@
 
 .centerbox { max-width: 1400px; margin: 0 auto; padding: 0 50px; } 
 
-.main header { padding: 1.5vw 0/* clamp(10px, 1.5vw, 30px) */; position: absolute; width: 100%; left: 0; top: 0; z-index: 7; } 
+.main header { padding: 1.5vw 0/* clamp(10px, 1.5vw, 30px) */; position: absolute; width: 100%; left: 0; top: -100%; z-index: 7; animation: header 2.5s forwards; } 
+@keyframes header {
+    0% {top: -100%; transform: rotate(-30deg);}
+    100% {top: 0%; transform: rotate(0);}
+}
+
 header { padding: 1.5vw 0; } 
+
 header:hover { background: linear-gradient(180deg, rgba(165,178,162,1), rgba(165,178,162,0)); } 
 header h1 { /* margin: 0 auto 30px auto; text-align: center; */ } 
 header .centerbox { display: flex; justify-content: space-between; } 
@@ -92,7 +98,7 @@ header .topmenu a:nth-child(1)::after { content: ""; border-right: 1px solid #50
 #section3 .swiper-button-next:hover, .swiper-button-prev { } 
 #section3 .swiper-pagination-bullet { } 
 #section3 .swiper-pagination { bottom: 0px; } 
-#section3 .swiper-pagination-bullet-active { background: #A5B2A2;; } 
+#section3 .swiper-pagination-bullet-active { background: #95a392;; } 
 
 footer { padding: 40px 0; border-top: 1px solid #DDDDDD; } 
 footer .centerbox { font-size: 14px; color: #555; } 
@@ -114,7 +120,7 @@ footer li.copyright { font-size: 12px; }
 .section_box_sub .menu { display: flex; flex-direction: column; gap: 40px; margin-bottom: 100px; } 
 .section_box_sub .menu h3 { text-align: center; font-family: 'Paperlogy-5Medium'; font-size: 24px; font-weight: normal; } 
 .section_box_sub .menu ul { display: flex; gap: 48px; justify-content: center; } 
-.section_box_sub .menu ul li { width: 150px; } 
+.section_box_sub .menu ul li { width: 150px; text-align: center;} 
 .section_box_sub .menu ul li a { line-height: 1.4; letter-spacing: -0.025em; font-size: clamp(14px, 1vw, 18px); padding: 5px 25px; font-family: 'Paperlogy'; font-weight: 400; } 
 .section_box_sub .menu ul li.on a { font-family: 'Paperlogy'; font-weight: 500; text-decoration: underline; text-underline-position: under; font-weight: 500; } 
 .section_box_sub .menu ul li:hover a { font-family: 'Paperlogy'; font-weight: 500; } 
