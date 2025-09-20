@@ -3,18 +3,18 @@
 
 .centerbox { max-width: 1400px; margin: 0 auto; padding: 0 50px; } 
 
-.main header { padding: 1.5vw 0/* clamp(10px, 1.5vw, 30px) */; position: absolute; width: 100%; left: 0; top: -100%; z-index: 7; animation: header 2.5s forwards; } 
+.main header { padding: 1.5vw 0clamp(10px, 1.5vw, 30px); position: absolute; width: 100%; left: 0; top: -100%; z-index: 7; animation: header 1.6s forwards; } 
 @keyframes header {
     0% {top: -100%; transform: rotate(-30deg);}
     100% {top: 0%; transform: rotate(0);}
 }
 
-header { padding: 1.5vw 0; } 
+header { padding: 1vw 0; } 
 
 header:hover { background: linear-gradient(180deg, rgba(165,178,162,1), rgba(165,178,162,0)); } 
 header h1 { /* margin: 0 auto 30px auto; text-align: center; */ } 
 header .centerbox { display: flex; justify-content: space-between; } 
-header nav .gnb { display: flex; height: 100%; justify-content: center; text-align: center; gap: 10px; } 
+header nav .gnb { display: flex; height: 100%; justify-content: space-between; text-align: center; width: 800px; } 
 header nav .gnb > li { display: flex; align-items: center; position: relative; } 
 
 header nav .gnb > li > a { font-family: 'Pretendar'; font-size: clamp(14px, 1vw, 20px); padding: 5px 20px; display: block; font-weight: 500; } 
