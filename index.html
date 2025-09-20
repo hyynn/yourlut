@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>YourLUT</title>
 
     <link rel="stylesheet" href="css/reset.css">
@@ -12,6 +12,24 @@
 
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+    <style>
+        /* 모바일 비디오 최적화 */
+        @media screen and (max-width: 768px) {
+            body.menu-open {
+                overflow: hidden;
+            }
+
+            #hero video {
+                object-position: center center;
+            }
+        }
+
+        /* 부드러운 터치 스크롤 */
+        * {
+            -webkit-overflow-scrolling: touch;
+        }
+    </style>
 </head>
 
 <body class="main">
@@ -123,7 +141,7 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="script/action2.js"></script>
+    <script src="script/action.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
