@@ -189,12 +189,41 @@ $(document).ready(function () {
     });
 });
 
-// PORTFOLIO 관련 코드
+// scrollTop
+const scrollTopBtn = document.getElementById('scrollTop');
+
+scrollTopBtn.addEventListener('click', function () {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+
+// 스크롤 이벤트 통합
+$(window).scroll(function () {
+    const scrollTop = $(window).scrollTop();
+
+    // 헤더 스타일 변경
+    if (scrollTop > 100) {
+        $('header').addClass('scrolled');
+    } else {
+        $('header').removeClass('scrolled');
+    }
+
+    // 스크롤 버튼 처리
+    if (scrollTop > 300) {
+        scrollTopBtn.classList.add('show');
+    } else {
+        scrollTopBtn.classList.remove('show');
+    }
+});
+
+// PORTFOLIO
 const folderConfig = {
-    'sub01_01': { count: 145, type: 'image', ext: 'jpg' },
-    'sub01_02': { count: 32, type: 'image', ext: 'jpg' },
-    'sub01_03': { count: 11, type: 'video', ext: 'mp4' },
-    'sub01_04': { count: 6, type: 'video', ext: 'mp4' }
+    'sub01_01': { maxCount: 100, type: 'image', ext: 'jpg' },
+    'sub01_02': { maxCount: 100, type: 'image', ext: 'jpg' },
+    'sub01_03': { maxCount: 20, type: 'video', ext: 'mp4' },
+    'sub01_04': { maxCount: 20, type: 'video', ext: 'mp4' }
 };
 
 // 현재 페이지 폴더 감지
@@ -213,6 +242,38 @@ if (currentPathname.includes('sub01_01')) {
 
 const currentConfig = folderConfig[currentFolder] || folderConfig['sub01_01'];
 
+// 파일 존재 여부 확인 함수
+async function checkFileExists(url) {
+    try {
+        const response = await fetch(url, { method: 'HEAD' });
+        return response.ok;
+    } catch {
+        return false;
+    }
+}
+
+// 실제 존재하는 파일들만 찾기
+async function getExistingFiles(folder, config) {
+    const existingFiles = [];
+
+    // 최대 개수까지 체크
+    for (let i = 1; i <= config.maxCount; i++) {
+        const filename = String(i).padStart(3, '0') + '.' + config.ext;
+        const filepath = `./images/${folder}/${filename}`;
+
+        const exists = await checkFileExists(filepath);
+        if (exists) {
+            existingFiles.push({
+                id: i,
+                src: filepath,
+                mediaType: config.type
+            });
+        }
+    }
+
+    return existingFiles;
+}
+
 // 배열 랜덤 섞기
 function shuffleArray(array) {
     const shuffled = [...array];
@@ -223,77 +284,33 @@ function shuffleArray(array) {
     return shuffled;
 }
 
-// 미디어 데이터 생성
-function generateMediaData(folder, config) {
-    const items = [];
+// 비율 할당 함수
+function assignRatios(items, config) {
     const isMobile = window.innerWidth <= 768;
-
-    // 모바일에서는 비율 조정
     const portraitRatios = isMobile ? ['2:3', '3:4'] : ['2:3', '5:7', '9:16', '3:4'];
     const landscapeRatios = isMobile ? ['3:2', '4:3'] : ['3:2', '16:9', '4:3', '7:5'];
 
     const portraitPercentage = config.type === 'image' ? 0.6 : 0.2;
+    const portraitCount = Math.round(items.length * portraitPercentage);
 
     const typeArray = [];
-    const portraitCount = Math.round(config.count * portraitPercentage);
-    const landscapeCount = config.count - portraitCount;
-
     for (let i = 0; i < portraitCount; i++) typeArray.push('portrait');
-    for (let i = 0; i < landscapeCount; i++) typeArray.push('landscape');
+    for (let i = 0; i < items.length - portraitCount; i++) typeArray.push('landscape');
 
-    const shuffledTypes = config.type === 'image'
-        ? shuffleWithClusterPrevention(typeArray)
-        : shuffleArray(typeArray);
+    const shuffledTypes = shuffleArray(typeArray);
 
-    for (let i = 1; i <= config.count; i++) {
-        const filename = String(i).padStart(3, '0') + '.' + config.ext;
-        const type = shuffledTypes[i - 1];
-
+    return items.map((item, index) => {
+        const type = shuffledTypes[index];
         let ratio;
+
         if (type === 'portrait') {
             ratio = portraitRatios[Math.floor(Math.random() * portraitRatios.length)];
         } else {
             ratio = landscapeRatios[Math.floor(Math.random() * landscapeRatios.length)];
         }
 
-        items.push({
-            id: i,
-            src: `./images/${folder}/${filename}`,
-            ratio: ratio,
-            mediaType: config.type
-        });
-    }
-    return items;
-}
-
-// 클러스터 방지 셔플
-function shuffleWithClusterPrevention(array) {
-    const shuffled = [...array];
-    const maxConsecutive = 3;
-
-    for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-
-    for (let i = 0; i < shuffled.length - maxConsecutive; i++) {
-        let consecutiveCount = 1;
-
-        for (let j = i + 1; j < shuffled.length && shuffled[j] === shuffled[i]; j++) {
-            consecutiveCount++;
-        }
-
-        if (consecutiveCount >= maxConsecutive) {
-            for (let k = i + maxConsecutive; k < shuffled.length; k++) {
-                if (shuffled[k] !== shuffled[i]) {
-                    [shuffled[i + 2], shuffled[k]] = [shuffled[k], shuffled[i + 2]];
-                    break;
-                }
-            }
-        }
-    }
-
-    return shuffled;
+        return { ...item, ratio };
+    });
 }
 
 // 비율 계산
@@ -344,7 +361,8 @@ function createImageItem(item, index) {
     };
 
     img.onerror = function () {
-        this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SW1hZ2Ugbm90IGZvdW5kPC90ZXh0Pjwvc3ZnPg==';
+        // 에러 발생시 해당 아이템 제거
+        div.remove();
     };
 
     div.addEventListener('click', () => {
@@ -371,6 +389,11 @@ function createVideoItem(item, index) {
         div.className = `portfolio-item video-item ${getRatioClass(actualRatio)}`;
     };
 
+    video.onerror = function () {
+        // 에러 발생시 해당 아이템 제거
+        div.remove();
+    };
+
     const playButton = document.createElement('div');
     playButton.className = 'play-overlay';
     playButton.innerHTML = `
@@ -384,7 +407,7 @@ function createVideoItem(item, index) {
         openLightbox(item.src, 'video');
     });
 
-    // 모바일에서는 호버 효과 제거
+    // 모바일이 아닐 때만 호버 효과
     if (!('ontouchstart' in window)) {
         div.addEventListener('mouseenter', () => {
             video.play().catch(() => { });
@@ -401,28 +424,39 @@ function createVideoItem(item, index) {
     return div;
 }
 
-// 포트폴리오 로드
-function loadPortfolio() {
+// 포트폴리오 로드 (수정된 메인 함수)
+async function loadPortfolio() {
     const grid = document.getElementById('portfolioGrid');
     if (!grid) return;
 
-    grid.innerHTML = '<div class="loading">미디어를 불러오는 중</div>';
+    grid.innerHTML = '<div class="loading">미디어를 불러오는 중...</div>';
 
-    const mediaItems = generateMediaData(currentFolder, currentConfig);
-    const shuffledItems = currentConfig.type === 'image'
-        ? shuffleArray(mediaItems)
-        : mediaItems;
+    try {
+        // 실제 존재하는 파일들 찾기
+        const existingFiles = await getExistingFiles(currentFolder, currentConfig);
 
-    setTimeout(() => {
+        if (existingFiles.length === 0) {
+            grid.innerHTML = '<div class="loading">표시할 미디어가 없습니다.</div>';
+            return;
+        }
+
+        // 비율 할당 및 섞기
+        const itemsWithRatios = assignRatios(existingFiles, currentConfig);
+        const shuffledItems = shuffleArray(itemsWithRatios);
+
+        // 그리드에 아이템 추가
         grid.innerHTML = '';
-
         shuffledItems.forEach((item, index) => {
             const portfolioItem = item.mediaType === 'video'
                 ? createVideoItem(item, index)
                 : createImageItem(item, index);
             grid.appendChild(portfolioItem);
         });
-    }, 500);
+
+    } catch (error) {
+        console.error('포트폴리오 로딩 중 오류:', error);
+        grid.innerHTML = '<div class="loading">미디어를 불러오는 중 오류가 발생했습니다.</div>';
+    }
 }
 
 // 라이트박스 열기
